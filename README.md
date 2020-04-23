@@ -1,1 +1,1 @@
-VHDL Clock for an FPGA
+## VHDL Clock for an FPGA
