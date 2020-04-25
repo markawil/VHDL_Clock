@@ -27,7 +27,7 @@ architecture Logic of DoubleDabble is
       variable temp_return: std_logic_vector(7 downto 0);
 
     begin
-      -- conver the binary to a usable integer
+      -- converts the binary to a usable integer
       temp_integer := to_integer(unsigned(binNum));
 
       case temp_integer is

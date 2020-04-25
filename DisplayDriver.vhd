@@ -9,25 +9,29 @@ use IEEE.std_logic_unsigned.all;
 
  entity DisplayDriver is
    port (
-     scan_clk: in std_logic; -- 500 Hz signal
+     scan_clk: in std_logic;
      min_ones: in std_logic_vector(3 downto 0);
      min_tens: in std_logic_vector(3 downto 0);
      hour_ones: in std_logic_vector(3 downto 0);
      hour_tens: in std_logic_vector(3 downto 0);
-     digit_vector: out std_logic_vector(3 downto 0); -- which digit to currently show
-     display_out: out std_logic_vector(6 downto 0) -- which segments to light up
+     digit_out: out std_logic_vector(3 downto 0);
+     display_out: out std_logic_vector(6 downto 0)
    );
  end entity DisplayDriver;
 
  architecture RTL of DisplayDriver is
   
-  -- function that converts the 4 digit binary number into a 7-segment display vector
-  function bin_to_7segment(binNum : std_logic_vector(3 downto 0)) 
+  -- using a function to convert each binary segment to the
+  -- right set of digits rather than doing this each time inside
+  -- the case statement of the process.
+  function sevenSegment(binNum : std_logic_vector(3 downto 0)) 
       return std_logic_vector is
       variable temp: std_logic_vector(6 downto 0);
     begin
+	 
+		-- going with the orientation for the digits as: g,f,e,d,c,b,a
       case binNum is
-        when "0000" => temp := "0111111"; -- 0 g,f,e,d,c,b,a
+        when "0000" => temp := "0111111"; -- 0
         when "0001" => temp := "0000110"; -- 1
         when "0010" => temp := "1011011"; -- 2
         when "0011" => temp := "1001111"; -- 3
@@ -45,45 +49,40 @@ use IEEE.std_logic_unsigned.all;
  begin
     -- main process that determines both which digit to select and 
     -- what 7-segment number to send
-    display_process: process(scan_clk)
-      --variable period_count: natural range 1 to 5 := 1;
+    main_proc: process(scan_clk)
+
       variable digit: natural range 1 to 4 := 1;
     begin
       if rising_edge(scan_clk) then
-        --if period_count = 5 then -- wait until 5 to actually do everything
-          --period_count := 1;
+        
           -- select the current digit and send out the
           -- 7-segment signal
           case digit is
             when 1 => 
-				  digit_vector <= "0001";
-              display_out <= bin_to_7segment(min_ones);
-				  --display_out <= "0000110";
+				  display_out <= sevenSegment(min_ones);	
+				  digit_out <= "0001";
             when 2 => 
-              digit_vector <= "0010";
-              display_out <= bin_to_7segment(min_tens);
-				  --display_out <= "0111111";
+				  display_out <= sevenSegment(min_tens);
+              digit_out <= "0010";              
             when 3 => 
-				  digit_vector <= "0100";
-              display_out <= bin_to_7segment(hour_ones);
-				  --display_out <= "0000110";
+              display_out <= sevenSegment(hour_ones);
+				  digit_out <= "0100";
             when 4 => 
-              digit_vector <= "1000";
+              digit_out <= "1000";
+				  -- requirement to not show the hours-tens digit if it's zero
               if (hour_tens = "0000") then
-                display_out <= bin_to_7segment("1111"); -- instruct function to turn off all digits
+                display_out <= sevenSegment("1111"); -- instruct function to turn off all digits
               else 
-                display_out <= bin_to_7segment(hour_tens);
+                display_out <= sevenSegment(hour_tens);
               end if;
           end case;
 
-          -- increment to the next digit
           if digit = 4 then
             digit := 1;
           else
             digit := digit + 1;
           end if;       
            
-        --end if;
       end if;
-    end process display_process;
+    end process main_proc;
  end architecture RTL;
