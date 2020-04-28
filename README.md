@@ -11,4 +11,4 @@
 
 My basic setup, contact me if you need some assistance
 
-![Imgur](https://i.imgur.com/ht0itv5l.png)
+![Imgur](https://i.imgur.com/rjsjar8l.png)
