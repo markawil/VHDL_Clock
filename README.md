@@ -9,6 +9,10 @@
 
 - Updated to allow 2 push buttons of your choice to be wired up to increment the hour and minutes so that the clock can function as a real time-keeping device.
 
-My basic setup, contact me if you need some assistance
+### What your RTL diagram should look like when you compile the project:
 
-![Imgur](https://i.imgur.com/rjsjar8l.png)
+![](images/rtl.png)
+
+### My basic setup, contact me if you need some assistance
+
+![](images/clock.png)
