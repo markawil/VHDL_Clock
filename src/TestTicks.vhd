@@ -1,5 +1,4 @@
 -- Mark Wilkinson
--- EE5143 Final Project
 -- Temp tester for tick, second and minute generators.
 
 library ieee;

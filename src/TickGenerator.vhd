@@ -1,5 +1,4 @@
 -- Mark Wilkinson
--- EE5143 Final Project
 -- Tick Generator
 
 -- The TickGenerator takes in the 50 MHz clock and generates a 1 Hz output clock 

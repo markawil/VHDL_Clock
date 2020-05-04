@@ -1,5 +1,4 @@
 -- Mark Wilkinson
--- EE5143 Final Project
 -- DoubleDabble block
 	
 library ieee;
